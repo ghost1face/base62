@@ -1,0 +1,20 @@
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace Base62.Tests
+{
+    [TestClass]
+    public class Base62Tests
+    {
+        [TestMethod]
+        public void Encoded_CanBe_Decoded()
+        {
+            var input = "120";
+            var converter = new Base62Converter(Base62Converter.CharacterSet.INVERTED);
+            var encoded = converter.Encode(input);
+
+            var decoded = converter.Decode(encoded);
+
+            Assert.AreEqual(input, decoded);
+        }
+    }
+}
