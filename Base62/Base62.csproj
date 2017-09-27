@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.0</TargetFramework>
-    <Description />
+    <Description>Base62 encoder and decoder for .NET for URL shortening and/or obfuscation.</Description>
     <Copyright></Copyright>
     <PackageLicenseUrl>https://github.com/ghost1face/base62/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/ghost1face/base62</PackageProjectUrl>
