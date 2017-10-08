@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.0;net45</TargetFrameworks>
+    <TargetFrameworks>netstandard1.0;netstandard1.1;netstandard1.2;netstandard1.3;netstandard1.4;netstandard1.5;netstandard1.6;netstandard2.0;net45;net451;net452;net46;net461;net462;net47;</TargetFrameworks>
     <Description>Base62 encoder and decoder for .NET for URL shortening and/or obfuscation.</Description>
     <Copyright></Copyright>
     <PackageLicenseUrl>https://github.com/ghost1face/base62/blob/master/LICENSE</PackageLicenseUrl>
