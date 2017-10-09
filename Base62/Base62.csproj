@@ -10,6 +10,7 @@
     <PackageTags>base62 url-shortener conversion</PackageTags>
     <Authors>Daniel Destouche</Authors>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageReleaseNotes>Initial version</PackageReleaseNotes>
   </PropertyGroup>
 
 </Project>
