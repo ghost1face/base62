@@ -38,4 +38,4 @@ new Base62Converter(Base62Converter.CharacterSet.INVERTED);
 
 ## License
 
-[The MIT LIcense (MIT)](./License).
+[The MIT LIcense (MIT)](./LICENSE).
