@@ -2,7 +2,8 @@
 
 Base62 encoder and decoder based on [Base62 for PHP](https://github.com/tuupola/base62) for .NET.  This library is useful for converting data into shortened strings good for URL shortening and/or obfuscating auto-incrementing resource ids from being exposed through RESTful APIs.
 
-[![N|NuGet](https://img.shields.io/nuget/v/Nuget.Core.svg)](https://www.nuget.org/packages/Base62/)
+[![Nuget](https://img.shields.io/nuget/v/Base62.svg)](https://www.nuget.org/packages/Base62)
+
 
 ## Compatibility
 
