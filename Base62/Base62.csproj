@@ -1,16 +1,28 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netstandard1.0;netstandard1.1;netstandard1.2;netstandard1.3;netstandard1.4;netstandard1.5;netstandard1.6;netstandard2.0;net20;net35;net40;net45;net451;net452;net46;net461;net462;net47;</TargetFrameworks>
     <Description>Base62 encoder and decoder for .NET for URL shortening and/or obfuscation.</Description>
     <Copyright></Copyright>
-    <PackageLicenseUrl>https://github.com/ghost1face/base62/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseUrl></PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/ghost1face/base62</PackageProjectUrl>
     <RepositoryUrl>https://github.com/ghost1face/base62</RepositoryUrl>
-    <PackageTags>base62 url-shortener conversion</PackageTags>
+    <PackageTags>base62 encoder decoder url-shortener conversion</PackageTags>
     <Authors>Daniel Destouche</Authors>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageReleaseNotes>Initial version</PackageReleaseNotes>
+    <PackageReleaseNotes>UTF8 support</PackageReleaseNotes>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <FileVersion>1.1.0.0</FileVersion>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <Version>1.1.0</Version>
+    <RepositoryType></RepositoryType>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\FileTypeInterrogator\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
