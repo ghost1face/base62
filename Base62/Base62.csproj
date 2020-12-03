@@ -13,13 +13,13 @@
     <PackageReleaseNotes>UTF8 support</PackageReleaseNotes>
     <AssemblyVersion>1.1.0.0</AssemblyVersion>
     <FileVersion>1.1.0.0</FileVersion>
-    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <Version>1.1.0</Version>
     <RepositoryType></RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\FileTypeInterrogator\LICENSE.md">
+    <None Include="../LICENSE">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
