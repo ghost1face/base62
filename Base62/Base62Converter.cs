@@ -40,18 +40,18 @@ namespace Base62
             return Decode(arr);
         }
 
-        private string Encode(byte[] value)
+        public string Encode(byte[] value)
         {
             var converted = BaseConvert(value, 256, 62);
             var builder = new StringBuilder();
             for (var i = 0; i < converted.Length; i++)
             {
-                builder.Append(characterSet[converted[i]]);
+                builder.Append(characterSet[i]);
             }
             return builder.ToString();
         }
 
-        private string Decode(byte[] value)
+        public string Decode(byte[] value)
         {
             var converted = BaseConvert(value, 62, 256);
 
