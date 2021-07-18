@@ -37,10 +37,11 @@ namespace Base62
                 arr[i] = (byte)characterSet.IndexOf(value[i]);
             }
 
-            return Decode(arr);
+            var converted = Decode(arr);
+            return Encoding.UTF8.GetString(converted, 0, converted.Length);
         }
 
-        private string Encode(byte[] value)
+        public string Encode(byte[] value)
         {
             var converted = BaseConvert(value, 256, 62);
             var builder = new StringBuilder();
@@ -51,11 +52,9 @@ namespace Base62
             return builder.ToString();
         }
 
-        private string Decode(byte[] value)
+        public byte[] Decode(byte[] value)
         {
-            var converted = BaseConvert(value, 62, 256);
-
-            return Encoding.UTF8.GetString(converted, 0, converted.Length);
+            return BaseConvert(value, 62, 256);
         }
 
         private static byte[] BaseConvert(byte[] source, int sourceBase, int targetBase)
