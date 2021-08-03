@@ -25,8 +25,13 @@ namespace Base62
         public string Encode(string value)
         {
             var arr = Encoding.UTF8.GetBytes(value);
-
-            return Encode(arr);
+            var converted = Encode(arr);
+            var builder = new StringBuilder();
+            foreach (var c in converted)
+            {
+                builder.Append(characterSet[c]);
+            }
+            return builder.ToString();
         }
 
         public string Decode(string value)
@@ -41,15 +46,10 @@ namespace Base62
             return Encoding.UTF8.GetString(converted, 0, converted.Length);
         }
 
-        public string Encode(byte[] value)
+        public byte[] Encode(byte[] value)
         {
-            var converted = BaseConvert(value, 256, 62);
-            var builder = new StringBuilder();
-            for (var i = 0; i < converted.Length; i++)
-            {
-                builder.Append(characterSet[converted[i]]);
-            }
-            return builder.ToString();
+            return BaseConvert(value, 256, 62);
+            
         }
 
         public byte[] Decode(byte[] value)
