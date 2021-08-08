@@ -49,7 +49,6 @@ namespace Base62
         public byte[] Encode(byte[] value)
         {
             return BaseConvert(value, 256, 62);
-            
         }
 
         public byte[] Decode(byte[] value)
@@ -60,7 +59,7 @@ namespace Base62
         private static byte[] BaseConvert(byte[] source, int sourceBase, int targetBase)
         {
             var result = new List<int>();
-            int count = 0;
+            int count;
             while ((count = source.Length) > 0)
             {
                 var quotient = new List<byte>();
@@ -68,7 +67,7 @@ namespace Base62
                 for (var i = 0; i != count; i++)
                 {
                     int accumulator = source[i] + remainder * sourceBase;
-                    byte digit = System.Convert.ToByte((accumulator - (accumulator % targetBase)) / targetBase);
+                    byte digit = (byte)((accumulator - (accumulator % targetBase)) / targetBase);
                     remainder = accumulator % targetBase;
                     if (quotient.Count > 0 || digit != 0)
                     {
