@@ -1,0 +1,27 @@
+name: Upload dotnet package
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  deploy:
+
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x' # SDK Version to use.
+          source-url: https://api.nuget.org/v3/index.json
+        env:
+          NUGET_AUTH_TOKEN: ${{secrets.NUGET_TOKEN}}
+      - run: dotnet build --configuration Release <my project>
+      - name: Create the package
+        run: dotnet pack --configuration Release <my project>
+      - name: Publish the package to GPR
+        run: dotnet nuget push <my project>/bin/Release/*.nupkg
