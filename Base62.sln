@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Base62", "Base62\Base62.csproj", "{AE1B5455-F004-4948-AE22-AC59C03C53BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Base62.Tests", "Base62.Tests\Base62.Tests.csproj", "{11235960-3E83-46D3-A66B-F493894471C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Base62.Tests", "Base62.Tests\Base62.Tests.csproj", "{11235960-3E83-46D3-A66B-F493894471C5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5CF4F621-110B-4ADF-A464-A75042EFCF6B}"
 	ProjectSection(SolutionItems) = preProject
-		LICENSE = LICENSE
+		LICENSE.md = LICENSE.md
 		README.md = README.md
 	EndProjectSection
 EndProject
