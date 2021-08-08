@@ -20,8 +20,8 @@ jobs:
           source-url: https://api.nuget.org/v3/index.json
         env:
           NUGET_AUTH_TOKEN: ${{secrets.NUGET_TOKEN}}
-      - run: dotnet build --configuration Release <my project>
+      - run: dotnet build --configuration Release .
       - name: Create the package
-        run: dotnet pack --configuration Release <my project>
+        run: dotnet pack --configuration Release .
       - name: Publish the package to GPR
-        run: dotnet nuget push <my project>/bin/Release/*.nupkg
+        run: dotnet nuget push Base62/bin/Release/*.nupkg
