@@ -9,6 +9,7 @@ Base62 encoder and decoder based on [Base62 for PHP](https://github.com/tuupola/
 
 Written to be netstandard compliant, this library should be able to be used cross-platform.  See [netstandard](https://docs.microsoft.com/en-us/dotnet/standard/net-standard) details for more information.
 
+
 ## Usage
 
 ```
