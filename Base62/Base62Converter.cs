@@ -96,11 +96,11 @@ namespace Base62
         /// <returns>Converted byte array.</returns>
         internal static byte[] BaseConvert(byte[] source, int sourceBase, int targetBase)
         {
-            if (targetBase < 0 || targetBase > 256)
-                throw new ArgumentOutOfRangeException(nameof(targetBase), targetBase, "Value must be between 1 & 256 (inclusive)");
+            if (targetBase < 2 || targetBase > 256)
+                throw new ArgumentOutOfRangeException(nameof(targetBase), targetBase, "Value must be between 2 & 256 (inclusive)");
             
-            if (sourceBase < 0 || sourceBase > 256)
-                throw new ArgumentOutOfRangeException(nameof(sourceBase), sourceBase, "Value must be between 1 & 256 (inclusive)");
+            if (sourceBase < 2 || sourceBase > 256)
+                throw new ArgumentOutOfRangeException(nameof(sourceBase), sourceBase, "Value must be between 2 & 256 (inclusive)");
 
             // Set initial capacity estimate if the size is small.
             var startCapacity = source.Length < 1028 
