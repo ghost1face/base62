@@ -55,6 +55,16 @@ namespace Base62.Tests
             Assert.Equal(input, decoded);
         }
 
+        [Fact]
+        public void FirstZeroBytesAreConvertedCorrectly()
+        {
+            var sourceBytes = new byte[] { 0, 0, 1, 2, 0, 0 };
+            var encoded = Base62Converter.BaseConvert(sourceBytes, 256, 62);
+            var decoded = Base62Converter.BaseConvert(encoded, 62, 256);
+            Assert.Equal(sourceBytes, decoded);
+
+        }
+
         public static IEnumerable<object[]> GetData()
         {
             var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "validation_data.txt");
