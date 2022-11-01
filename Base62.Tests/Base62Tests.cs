@@ -59,10 +59,11 @@ namespace Base62.Tests
         public void FirstZeroBytesAreConvertedCorrectly()
         {
             var sourceBytes = new byte[] { 0, 0, 1, 2, 0, 0 };
-            var encoded = Base62Converter.BaseConvert(sourceBytes, 256, 62);
-            var decoded = Base62Converter.BaseConvert(encoded, 62, 256);
+            var converter = new Base62Converter(Base62Converter.CharacterSet.DEFAULT);
+            var encoded = converter.Encode(sourceBytes);
+            var decoded = converter.Decode(encoded);
+            
             Assert.Equal(sourceBytes, decoded);
-
         }
 
         public static IEnumerable<object[]> GetData()

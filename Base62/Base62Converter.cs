@@ -94,7 +94,7 @@ namespace Base62
         /// <param name="sourceBase">Source base to convert from.</param>
         /// <param name="targetBase">Target base to convert to.</param>
         /// <returns>Converted byte array.</returns>
-        internal static byte[] BaseConvert(byte[] source, int sourceBase, int targetBase)
+        private static byte[] BaseConvert(byte[] source, int sourceBase, int targetBase)
         {
             if (targetBase < 2 || targetBase > 256)
                 throw new ArgumentOutOfRangeException(nameof(targetBase), targetBase, "Value must be between 2 & 256 (inclusive)");
