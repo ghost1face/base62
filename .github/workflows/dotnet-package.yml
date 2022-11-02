@@ -6,7 +6,6 @@ on:
 
 jobs:
   deploy:
-
     runs-on: ubuntu-latest
     permissions:
       packages: write
@@ -14,9 +13,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      - name: Setup .NET
       - uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '6.0.x' # SDK Version to use.
+          dotnet-version: 6.0.x
       - run: dotnet build --configuration Release .
       - name: Create the package
         run: dotnet pack --configuration Release .
