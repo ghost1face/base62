@@ -66,6 +66,106 @@ namespace Base62.Tests
             Assert.Equal(sourceBytes, decoded);
         }
 
+        [Fact]
+        public void EmptyString_EncodesAndDecodesToEmpty()
+        {
+            var converter = new Base62Converter();
+
+            var encoded = converter.Encode(string.Empty);
+            var decoded = converter.Decode(encoded);
+
+            Assert.Equal(string.Empty, encoded);
+            Assert.Equal(string.Empty, decoded);
+        }
+
+        [Fact]
+        public void EmptyByteArray_EncodesAndDecodesToEmpty()
+        {
+            var converter = new Base62Converter();
+            var empty = Array.Empty<byte>();
+
+            var encoded = converter.Encode(empty);
+            var decoded = converter.Decode(encoded);
+
+            Assert.Empty(encoded);
+            Assert.Empty(decoded);
+        }
+
+        [Fact]
+        public void AllZeroBytes_ArePreservedOnRoundTrip()
+        {
+            var sourceBytes = new byte[] { 0, 0, 0 };
+            var converter = new Base62Converter();
+            var encodedBytes = converter.Encode(sourceBytes);
+            var decoded = converter.Decode(encodedBytes);
+
+            Assert.Equal(sourceBytes, decoded);
+            Assert.Equal("000", converter.Encode("\0\0\0"));
+        }
+
+        [Fact]
+        public void StringWithLeadingNullBytes_RoundTrips()
+        {
+            var input = "\0\0\0";
+            var converter = new Base62Converter();
+            var encoded = converter.Encode(input);
+            var decoded = converter.Decode(encoded);
+
+            Assert.Equal(input, decoded);
+            Assert.StartsWith("0", encoded);
+        }
+
+        [Fact]
+        public void SingleZeroByte_RoundTrips()
+        {
+            var sourceBytes = new byte[] { 0 };
+            var converter = new Base62Converter();
+
+            Assert.Equal(sourceBytes, converter.Decode(converter.Encode(sourceBytes)));
+        }
+
+        [Fact]
+        public void Decode_WithCharacterOutsideCharset_DoesNotThrow()
+        {
+            var converter = new Base62Converter();
+            var validEncoded = converter.Encode("120");
+
+            var decoded = converter.Decode(validEncoded + "@");
+
+            Assert.NotEqual("120", decoded);
+        }
+
+        [Fact]
+        public void Decode_WithCharacterAboveAsciiRange_DoesNotThrow()
+        {
+            var converter = new Base62Converter();
+            var validEncoded = converter.Encode("120");
+
+            var decoded = converter.Decode(validEncoded + "\u0080");
+
+            Assert.NotEqual("120", decoded);
+        }
+
+        [Fact]
+        public void InvertedCharacterSet_AllZeroBytes_RoundTrip()
+        {
+            var sourceBytes = new byte[] { 0, 0 };
+            var converter = new Base62Converter(Base62Converter.CharacterSet.INVERTED);
+
+            Assert.Equal(sourceBytes, converter.Decode(converter.Encode(sourceBytes)));
+        }
+
+        [Fact]
+        public void DefaultConstructor_MatchesExplicitDefaultCharacterSet()
+        {
+            var input = "120";
+            var implicitConverter = new Base62Converter();
+            var explicitConverter = new Base62Converter(Base62Converter.CharacterSet.DEFAULT);
+
+            Assert.Equal(explicitConverter.Encode(input), implicitConverter.Encode(input));
+            Assert.Equal(explicitConverter.Decode("DWjo"), implicitConverter.Decode("DWjo"));
+        }
+
         public static IEnumerable<object[]> GetData()
         {
             var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "validation_data.txt");
