@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" Version="0.15.8" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(NugetPackageVersion)' == ''">
+    <ProjectReference Include="..\Base62\Base62.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(NugetPackageVersion)' != ''">
+    <PackageReference Include="Base62" Version="$(NugetPackageVersion)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\Base62.Tests\validation_data.txt">
+      <Link>validation_data.txt</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Visible>false</Visible>
+    </None>
+  </ItemGroup>
+
+</Project>
