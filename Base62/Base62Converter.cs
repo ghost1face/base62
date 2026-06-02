@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace Base62
@@ -11,7 +10,9 @@ namespace Base62
     {
         private const string DEFAULT_CHARACTER_SET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         private const string INVERTED_CHARACTER_SET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        private const byte InvalidCharacterValue = byte.MaxValue;
         private readonly string characterSet;
+        private readonly byte[] decodeMap;
 
         /// <summary>
         /// Initializes a new instance of <see cref="Base62Converter"/>.
@@ -19,6 +20,7 @@ namespace Base62
         public Base62Converter()
         {
             characterSet = DEFAULT_CHARACTER_SET;
+            decodeMap = CreateDecodeMap(characterSet);
         }
 
         /// <summary>
@@ -31,6 +33,8 @@ namespace Base62
                 characterSet = DEFAULT_CHARACTER_SET;
             else
                 characterSet = INVERTED_CHARACTER_SET;
+
+            decodeMap = CreateDecodeMap(characterSet);
         }
 
         /// <summary>
@@ -42,12 +46,12 @@ namespace Base62
         {
             var arr = Encoding.UTF8.GetBytes(value);
             var converted = Encode(arr);
-            var builder = new StringBuilder();
-            foreach (var c in converted)
+            var output = new char[converted.Length];
+            for (var i = 0; i < converted.Length; i++)
             {
-                builder.Append(characterSet[c]);
+                output[i] = characterSet[converted[i]];
             }
-            return builder.ToString();
+            return new string(output);
         }
 
         /// <summary>
@@ -60,7 +64,8 @@ namespace Base62
             var arr = new byte[value.Length];
             for (var i = 0; i < arr.Length; i++)
             {
-                arr[i] = (byte)characterSet.IndexOf(value[i]);
+                var c = value[i];
+                arr[i] = c < decodeMap.Length ? decodeMap[c] : InvalidCharacterValue;
             }
 
             var converted = Decode(arr);
@@ -102,52 +107,78 @@ namespace Base62
             if (sourceBase < 2 || sourceBase > 256)
                 throw new ArgumentOutOfRangeException(nameof(sourceBase), sourceBase, "Value must be between 2 & 256 (inclusive)");
 
-            // Set initial capacity estimate if the size is small.
-            var startCapacity = source.Length < 1028 
-                ? (int)(source.Length * 1.5) 
-                : source.Length;
+            if (source.Length == 0)
+                return Array.Empty<byte>();
 
-            var result = new List<int>(startCapacity);
-            var quotient = new List<byte>((int)(source.Length * 0.5));
-            int count;
-            int initialStartOffset = 0;
+            var sourceBuffer = new byte[source.Length];
+            Buffer.BlockCopy(source, 0, sourceBuffer, 0, source.Length);
 
-            // This is a bug fix for the following issue:
-            // https://github.com/ghost1face/base62/issues/4
-            while (source[initialStartOffset] == 0)
+            var leadingZeroCount = 0;
+            while (leadingZeroCount < sourceBuffer.Length && sourceBuffer[leadingZeroCount] == 0)
             {
-                result.Add(0);
-                initialStartOffset++;
+                leadingZeroCount++;
             }
 
-            int startOffset = initialStartOffset;
+            if (leadingZeroCount == sourceBuffer.Length)
+                return new byte[sourceBuffer.Length];
 
-            while ((count = source.Length) > 0)
+            var maxResultDigitCount = sourceBase >= targetBase
+                ? (int)Math.Ceiling(source.Length * Math.Log(sourceBase) / Math.Log(targetBase)) + 1
+                : source.Length + 1;
+
+            var quotientBuffer = new byte[source.Length];
+            var resultDigits = new byte[maxResultDigitCount];
+            var resultDigitCount = 0;
+            var sourceLength = sourceBuffer.Length;
+            var sourceStartOffset = leadingZeroCount;
+
+            while (sourceLength > 0)
             {
-                quotient.Clear();
                 int remainder = 0;
-                for (var i = initialStartOffset; i != count; i++)
+                var quotientLength = 0;
+                for (var i = sourceStartOffset; i < sourceLength; i++)
                 {
-                    int accumulator = source[i] + remainder * sourceBase;
-                    byte digit = (byte)((accumulator - (accumulator % targetBase)) / targetBase);
+                    var accumulator = sourceBuffer[i] + remainder * sourceBase;
+                    var digit = (byte)(accumulator / targetBase);
                     remainder = accumulator % targetBase;
-                    if (quotient.Count > 0 || digit != 0)
+                    if (quotientLength > 0 || digit != 0)
                     {
-                        quotient.Add(digit);
+                        quotientBuffer[quotientLength++] = digit;
                     }
                 }
 
-                result.Insert(startOffset, remainder);
-                source = quotient.ToArray();
-                initialStartOffset = 0;
+                resultDigits[resultDigitCount++] = (byte)remainder;
+                if (quotientLength == 0)
+                    break;
+
+                (sourceBuffer, quotientBuffer) = (quotientBuffer, sourceBuffer);
+                sourceLength = quotientLength;
+                sourceStartOffset = 0;
             }
 
-            var output = new byte[result.Count];
-
-            for (int i = 0; i < result.Count; i++)
-                output[i] = (byte)result[i];
+            var output = new byte[leadingZeroCount + resultDigitCount];
+            for (var i = 0; i < resultDigitCount; i++)
+            {
+                output[leadingZeroCount + i] = resultDigits[resultDigitCount - 1 - i];
+            }
 
             return output;
+        }
+
+        private static byte[] CreateDecodeMap(string characterSet)
+        {
+            var map = new byte[128];
+            for (var i = 0; i < map.Length; i++)
+            {
+                map[i] = InvalidCharacterValue;
+            }
+
+            for (byte i = 0; i < characterSet.Length; i++)
+            {
+                map[characterSet[i]] = i;
+            }
+
+            return map;
         }
 
         /// <summary>
